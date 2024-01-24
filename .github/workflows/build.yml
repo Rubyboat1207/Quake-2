@@ -13,18 +13,9 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-      with:
-        repository: 'rrcenter/quake2-vs2022'
-        ref: 'master'
 
     - name: Set up MSBuild
       uses: microsoft/setup-msbuild@v1.0.2
-
-    - name: Install Visual Studio Build Tools
-      uses: egor-tensin/setup-msvc@v1
-      with:
-        msvc-version: 'latest'
-        components: Microsoft.VisualStudio.Component.VC.Tools.x86.x64
 
     - name: Compile Quake 2 Source Code
       run: |
