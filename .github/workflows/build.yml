@@ -1,0 +1,39 @@
+name: Compile Quake 2 on Windows with Visual Studio 2022
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        repository: 'rrcenter/quake2-vs2022'
+        ref: 'master'
+
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Install Visual Studio Build Tools
+      uses: egor-tensin/setup-msvc@v1
+      with:
+        msvc-version: 'latest'
+        components: Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+
+    - name: Compile Quake 2 Source Code
+      run: |
+        msbuild quake2.sln /p:Configuration=Release /p:Platform=x64
+
+    - name: Archive Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: quake2-build-windows
+        path: |
+          **/*.exe
+          **/*.dll
